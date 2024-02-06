@@ -1,0 +1,44 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model.Enum" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Service" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+namespace NRIAwards.Common.Entity.Search;
+
+public class <#= EntityDescription.PluralName #>SearchParams : BaseSearchParams
+{
+	public <#= EntityDescription.PluralName #>SearchParams(int startIndex = 0, int? objectsCount = null) : base(startIndex, objectsCount)
+	{
+	}
+
+	public <#= EntityDescription.PluralName #>SearchParams() : base()
+	{
+
+	}
+
+	public List<int> Ids { get; set; }
+<# 
+
+foreach (var propertyDescription in EntityDescription.Properties.Where(item => BaseProperty.Select(property => property.EntityName).Contains(item.EntityName) == false))
+{
+	if (Extensions.CanBeASearchParameter(propertyDescription.EntityType) == false)
+	{
+		continue;
+	}
+	var property = Extensions.GetSearchParameterProperty(propertyDescription.EntityType, propertyDescription.EntityName);
+#>
+	<#= property #>
+<#
+}
+#>
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal List<PropertyDescription> BaseProperty;
+
+	internal SearchParamsTemplate(EntityDescription entityDescription, List<PropertyDescription> baseProperty) {
+		EntityDescription = entityDescription;
+		BaseProperty = baseProperty;
+	}
+#>

@@ -1,0 +1,15 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+namespace NRIAwards.Common.Entity.Include;
+
+public class <#= EntityDescription.PluralName #>IncludeParams
+{
+
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal IncludeParamsTemplate(EntityDescription entityDescription) {
+		EntityDescription = entityDescription;
+	}
+#>

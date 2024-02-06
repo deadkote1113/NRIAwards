@@ -1,0 +1,215 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net7.0</TargetFramework>
+    <RootNamespace>CodeGeneration.ServerCodeGenerator</RootNamespace>
+	<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+	<EnforceCodeStyleInBuild>false</EnforceCodeStyleInBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="appsettings.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="Model\SearchParamsTypes\BoolSearchParamGenerator.cs" />
+    <Compile Include="Model\SearchParamsTypes\DateTimeSearchParamGenerator.cs" />
+    <Compile Include="Model\SearchParamsTypes\NumberSearchParamGenerator.cs" />
+    <Compile Include="Model\SearchParamsTypes\SearchParamGenerator.cs" />
+    <Compile Include="Model\SearchParamsTypes\StringSearchParamGenerator.cs" />
+    <Compile Include="Service\CodeGenerationService.cs" />
+    <Compile Include="Service\CodeGenerator.cs" />
+    <Compile Include="Model\EntityDescription.cs" />
+    <Compile Include="Model\Enum\ExistingFilesProcessMode.cs" />
+    <Compile Include="Model\Enum\GeneratedFiles.cs" />
+    <Compile Include="Model\Enum\PropertyDisplayType.cs" />
+    <Compile Include="Service\Extensions.cs" />
+    <Compile Include="Service\MergeUtility\IMergeUtility.cs" />
+    <Compile Include="Service\MergeUtility\KDiff3MergeUtility.cs" />
+    <Compile Include="Service\MergeUtility\MergeUtility.cs" />
+    <Compile Include="Service\MergeUtility\TortoiseMergeUtility.cs" />
+    <Compile Include="Model\MicrosoftBuildProject.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Model\PropertyDescription.cs" />
+    <Compile Include="Template\ServiceTemplate.cs" />
+    <Compile Include="Template\ControllerTemplate.cs" />
+    <Compile Include="Template\BlCrudInterfaseTemplate.cs" />
+    <Compile Include="Template\BlExtendedInterfaseTemplate.cs" />
+    <Compile Include="Template\RepositoryTemplate.cs" />
+    <Compile Include="Template\EntityTemplate.cs" />
+    <Compile Include="Template\DalCrudInterfaseTemplate.cs" />
+    <Compile Include="Template\DalExtendedInterfaseTemplate.cs" />
+    <Compile Include="Template\OrderParamsTemplate.cs" />
+    <Compile Include="Template\ModelTemplate.cs" />
+    <Compile Include="Template\IncludeParamsTemplate.cs" />
+    <Compile Include="Template\SearchParamsTemplate.cs" />
+    <Compile Include="Template\ViewIndexTemplate.cs" />
+    <Compile Include="Template\ViewUpdateTemplate.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+    <PackageReference Include="NLog" />
+    <PackageReference Include="NLog.Web.AspNetCore" />
+    <PackageReference Include="System.CodeDom" />
+	  <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+	  </PackageReference>
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\NRIAwards.DependencyInjection\NRIAwards.DependencyInjection.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Template\ServiceTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ServiceTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\ControllerTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ControllerTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\BLCrudInterfaseTemplate.tt">
+      <LastGenOutput>BlCrudInterfaseTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\BLExtendedInterfaseTemplate.tt">
+      <LastGenOutput>BlExtendedInterfaseTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\RepositoryTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>RepositoryTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\EntityTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>EntityTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\DALCrudInterfaseTemplate.tt">
+      <LastGenOutput>DalCrudInterfaseTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\DALExtendedInterfaseTemplate.tt">
+      <LastGenOutput>DalExtendedInterfaseTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\OrderParamsTemplate.tt">
+      <LastGenOutput>OrderParamsTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\ModelTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ModelTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\IncludeParamsTemplate.tt">
+      <LastGenOutput>IncludeParamsTemplate.cs</LastGenOutput>
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+    </None>
+    <None Update="Template\SearchParamsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>SearchParamsTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\ViewIndexTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ViewIndexTemplate.cs</LastGenOutput>
+    </None>
+    <None Update="Template\ViewUpdateTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>ViewUpdateTemplate.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Template\ServiceTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ServiceTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\ControllerTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ControllerTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\RepositoryTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>RepositoryTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\EntityTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>EntityTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\ModelTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ModelTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\SearchParamsTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>SearchParamsTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\ViewIndexTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ViewIndexTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Update="Template\ViewUpdateTemplate.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>ViewUpdateTemplate.tt</DependentUpon>
+    </Compile>
+	<Compile Update="Template\IncludeParamsTemplate.cs">
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+		<DependentUpon>IncludeParamsTemplate.tt</DependentUpon>
+	</Compile>
+	<Compile Update="Template\OrderParamsTemplate.cs">
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+		<DependentUpon>OrderParamsTemplate.tt</DependentUpon>
+	</Compile>
+	<Compile Include="Template\DalCrudInterfaseTemplate.cs">
+		<DependentUpon>DALCrudInterfaseTemplate.tt</DependentUpon>
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+	</Compile>
+	<Compile Include="Template\DalExtendedInterfaseTemplate.cs">
+		<DependentUpon>DALExtendedInterfaseTemplate.tt</DependentUpon>
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+	</Compile>
+	<Compile Include="Template\BlCrudInterfaseTemplate.cs">
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+		<DependentUpon>BLCrudInterfaseTemplate.tt</DependentUpon>
+	</Compile>
+	<Compile Include="Template\BlExtendedInterfaseTemplate.cs">
+		<DesignTime>True</DesignTime>
+		<AutoGen>True</AutoGen>
+		<DependentUpon>BLExtendedInterfaseTemplate.tt</DependentUpon>
+	</Compile>
+  </ItemGroup>
+
+</Project>

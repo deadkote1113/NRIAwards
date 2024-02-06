@@ -1,0 +1,10 @@
+﻿global using NRIAwards.BL.Base;
+global using NRIAwards.BL.Base.Interface.Crud;
+global using NRIAwards.BL.Base.Interface.Extended;
+global using NRIAwards.Common.Entity;
+global using NRIAwards.Common.Entity.Include;
+global using NRIAwards.Common.Entity.Order;
+global using NRIAwards.Common.Entity.Search;
+global using NRIAwards.Common.Heplers;
+global using NRIAwards.DAL.Base.Interface.Crud;
+global using NRIAwards.DAL.Base.Interface.Extended;

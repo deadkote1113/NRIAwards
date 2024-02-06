@@ -1,0 +1,10 @@
+﻿global using NRIAwards.Common.Entity.Enum;
+global using NRIAwards.Common.Entity.Include;
+global using NRIAwards.Common.Entity.Order;
+global using NRIAwards.Common.Entity.Search;
+global using NRIAwards.DAL.Base;
+global using NRIAwards.DAL.Base.Interface.Crud;
+global using NRIAwards.DAL.Base.Interface.Extended;
+global using NRIAwards.DAL.Context;
+global using NRIAwards.DAL.Context.Model;
+global using Microsoft.EntityFrameworkCore;

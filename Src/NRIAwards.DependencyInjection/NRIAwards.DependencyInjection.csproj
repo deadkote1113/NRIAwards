@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\NRIAwards.BL\NRIAwards.BL.Integration\NRIAwards.BL.Integration.csproj" />
+	  <ProjectReference Include="..\NRIAwards.BL\NRIAwards.BL.Service\NRIAwards.BL.Service.csproj" />
+	  <ProjectReference Include="..\NRIAwards.DAL\NRIAwards.DAL.Repository\NRIAwards.DAL.Repository.csproj" />
+	</ItemGroup>
+
+</Project>

@@ -1,0 +1,17 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+namespace NRIAwards.Common.Entity.Order;
+
+public class <#= EntityDescription.PluralName #>OrderParams : BaseOrderParams
+{
+	public <#= EntityDescription.PluralName #>OrderParams() : base()
+	{
+	}
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal OrderParamsTemplate(EntityDescription entityDescription) {
+		EntityDescription = entityDescription;
+	}
+#>

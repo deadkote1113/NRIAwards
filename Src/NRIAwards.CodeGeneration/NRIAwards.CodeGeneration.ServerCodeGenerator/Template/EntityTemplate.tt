@@ -1,0 +1,61 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Service" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model.Enum" #>
+<#@ import namespace="System.Collections.Generic" #>
+namespace NRIAwards.Common.Entity;
+
+<# 
+var usedNamespaces = new[] { "Common.Enums", "System.Collections.Generic" };
+var constructorArguments = "";
+List<PropertyDescription> allPropertyies = new();
+allPropertyies.AddRange(BaseProperty);
+allPropertyies.AddRange(EntityDescription.Properties);
+
+foreach (var propertyDescription in allPropertyies)
+{
+	if (constructorArguments != "")
+	{
+		constructorArguments += ", ";
+	}
+	constructorArguments += propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) + " " + propertyDescription.EntityName.ToFirstLower();
+}
+#>
+public class <#= EntityDescription.Name #> : BaseEntity<int>
+{
+<#= $"public {EntityDescription.Name}({constructorArguments}) : base(id, createdAt, updatedAt, deletedAt)".SplitToLines(1, MaxLineWidth, new string[] { ", " }) #>
+	{
+<#
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+#>
+		<#= propertyDescription.EntityName #> = <#= propertyDescription.EntityName.ToFirstLower() #>;
+<#
+}
+#>
+	}
+
+	public <#= EntityDescription.Name #>() : base()
+	{
+	}
+
+<# 
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+#>
+	public <#= propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) #> <#= propertyDescription.EntityName #> { get; set; }
+<#
+}
+#>
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal List<PropertyDescription> BaseProperty;
+	internal EntityTemplate(EntityDescription entityDescription, int maxLineWidth, List<PropertyDescription> baseProperty) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+		BaseProperty = baseProperty;
+	}
+#>

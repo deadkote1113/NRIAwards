@@ -1,0 +1,14 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+namespace NRIAwards.BL.Base.Interface.Crud;
+
+public interface ICrud<#= EntityDescription.PluralName #>Service : IBaseService<<#= EntityDescription.Name #>, int, <#= EntityDescription.PluralName #>SearchParams, <#= EntityDescription.PluralName #>OrderParams, <#= EntityDescription.PluralName #>IncludeParams>
+{
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal BLCrudInterfaseTemplate(EntityDescription entityDescription) {
+		EntityDescription = entityDescription;
+	}
+#>

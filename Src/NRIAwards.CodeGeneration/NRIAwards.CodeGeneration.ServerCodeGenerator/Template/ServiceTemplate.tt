@@ -1,0 +1,24 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model.Enum" #>
+namespace NRIAwards.BL.Service;
+
+public class <#= EntityDescription.PluralName #>Service : BaseService<<#= EntityDescription.Name #>, int, <#= EntityDescription.PluralName #>SearchParams, <#= EntityDescription.PluralName #>OrderParams, <#= EntityDescription.PluralName #>IncludeParams>,
+	ICrud<#= EntityDescription.PluralName #>Service, IExtended<#= EntityDescription.PluralName #>Service
+{
+	private readonly IExtended<#= EntityDescription.PluralName #>Repository _extended<#= EntityDescription.PluralName #>Repository;
+
+	public <#= EntityDescription.PluralName #>Service(ICrud<#= EntityDescription.PluralName #>Repository repository,
+		IExtended<#= EntityDescription.PluralName #>Repository extended<#= EntityDescription.PluralName #>Repository
+		) : base(repository)
+	{
+		_extended<#= EntityDescription.PluralName #>Repository = extended<#= EntityDescription.PluralName #>Repository;
+	}
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal ServiceTemplate(EntityDescription entityDescription) {
+		EntityDescription = entityDescription;
+	}
+#>

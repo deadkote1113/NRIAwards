@@ -1,0 +1,9 @@
+﻿global using NRIAwards.Common.Entity.Enum;
+global using NRIAwards.Common.Entity;
+global using NRIAwards.Common.Entity.Order;
+global using NRIAwards.Common.Entity.Search;
+global using NRIAwards.Common.Entity.Include;
+global using NRIAwards.BL.Base.Interface;
+global using NRIAwards.Common.Heplers;
+global using NRIAwards.DAL.Base.Interface;
+global using NRIAwards.Common.Heplers;

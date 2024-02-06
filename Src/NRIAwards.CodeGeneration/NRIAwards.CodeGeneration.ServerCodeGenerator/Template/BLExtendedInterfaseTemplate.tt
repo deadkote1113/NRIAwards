@@ -1,0 +1,14 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+namespace NRIAwards.BL.Base.Interface.Extended;
+
+public interface IExtended<#= EntityDescription.PluralName #>Service
+{
+
+}
+<#+
+	internal EntityDescription EntityDescription;
+	internal BLExtendedInterfaseTemplate(EntityDescription entityDescription) {
+		EntityDescription = entityDescription;
+	}
+#>

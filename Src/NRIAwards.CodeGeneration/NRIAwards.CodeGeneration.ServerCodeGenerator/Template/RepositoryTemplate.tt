@@ -1,0 +1,139 @@
+﻿<#@ template visibility="internal" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Service" #>
+<#@ import namespace="CodeGeneration.ServerCodeGenerator.Model.Enum" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Linq" #>
+using <#= EntityDescription.Name #>Entity = Common.Entity.<#= EntityDescription.Name #>;
+
+namespace NRIAwards.DAL.Repository;
+
+public class <#= EntityDescription.PluralName #>Repository : BaseRepository<PostgresDbContext, <#= EntityDescription.Name #>, <#= EntityDescription.Name #>Entity, int, <#= EntityDescription.PluralName #>SearchParams, <#= EntityDescription.PluralName #>OrderParams, <#= EntityDescription.PluralName #>IncludeParams>,
+	ICrud<#= EntityDescription.PluralName #>Repository, IExtended<#= EntityDescription.PluralName #>Repository
+{
+
+	protected internal <#= EntityDescription.PluralName #>Repository(IServiceProvider serviceProvider) : base(serviceProvider)
+	{
+	}
+
+	protected override bool RequiresUpdatesAfterObjectSaving => false;
+
+	protected override async Task UpdateBeforeSavingAsync(<#= EntityDescription.Name #>Entity entity, <#= EntityDescription.Name #> dbObject, bool exists)
+	{
+		await base.UpdateBeforeSavingAsync(entity, dbObject, exists);
+
+<# 
+var usedNamespaces = new[] { "Common.Enums", "System.Collections.Generic" };
+foreach (var propertyDescription in EntityDescription.Properties)
+{
+if (string.CompareOrdinal(propertyDescription.DbName, "Id") != 0)
+{
+	if (propertyDescription.RepresentsBitMask())
+	{
+		var nullCondition = propertyDescription.DbType.IsNullable() ? "" : " ?? 0";
+#>
+		dbObject.<#= propertyDescription.DbName #> = entity.<#= propertyDescription.EntityName #>?.Aggregate(0, (currentResult, item) => currentResult | (<#=  propertyDescription.DbType.GetNonNullableType().GetFriendlyCSharpName(usedNamespaces) #>) item)<#= nullCondition #>;
+<#
+	}
+	else
+	{
+		var typeCast = !propertyDescription.EntityType.Equals(propertyDescription.DbType) ? "(" + propertyDescription.DbType.GetFriendlyCSharpName(usedNamespaces) + ")" : "";
+#>
+		dbObject.<#= propertyDescription.DbName #> = <#= typeCast #>entity.<#= propertyDescription.EntityName #>;
+<#
+	}
+}
+}
+#>
+	}
+	<#
+var queries = String.Empty;
+foreach (var propertyDescription in EntityDescription.Properties.Where(item => BaseProperty.Select(property => property.EntityName).Contains(item.EntityName) == false))
+{
+	if (Extensions.CanBeASearchParameter(propertyDescription.EntityType) == false)
+	{
+		continue;
+	}
+	var queryFilter = Extensions.GetSearchParameterQueryFilter(propertyDescription.EntityType, propertyDescription.EntityName);
+	queries += queryFilter;
+}
+#>
+
+	protected override async Task<IQueryable<<#= EntityDescription.Name #>>> BuildDbQueryAsync(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>SearchParams searchParams)
+	{
+		dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
+
+		if (searchParams != null)
+		{
+			dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
+			if (searchParams.Ids != null)
+			{
+				dbObjects = dbObjects.Where(item => searchParams.Ids.Contains(item.Id));
+			}
+<#= queries #>        }
+		return dbObjects;
+	}
+
+	protected override async Task<IQueryable<<#= EntityDescription.Name #>>> OrderDbQueryAsync(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>OrderParams orderParams)
+	{
+		dbObjects = await base.OrderDbQueryAsync(dbObjects, orderParams);
+
+		if (orderParams != null)
+		{
+
+		}
+
+		return dbObjects;
+	}
+
+	protected override async Task<IList<<#= EntityDescription.Name #>Entity>> BuildEntitiesListAsync(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>IncludeParams includeParams)
+	{
+		return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
+	}
+
+	internal static <#= EntityDescription.Name #>Entity ConvertDbObjectToEntity(<#= EntityDescription.Name #> dbObject)
+	{
+		if (dbObject == null)
+		{
+			return null;
+		}
+
+<#
+var constructorParams = "";
+List<PropertyDescription> allPropertyies = new();
+allPropertyies.AddRange(BaseProperty);
+allPropertyies.AddRange(EntityDescription.Properties);
+foreach (var propertyDescription in allPropertyies)
+{
+	if (constructorParams != "")
+	{
+		constructorParams += ", ";
+	}
+	if (propertyDescription.RepresentsBitMask())
+	{
+		var enumTypeFriendlyName = propertyDescription.EntityType.GetGenericArguments()[0].GetFriendlyCSharpName(usedNamespaces);
+		var nonNullableDbTypeFriendlyName = propertyDescription.DbType.GetNonNullableType().GetFriendlyCSharpName(usedNamespaces);
+		var nullCondition = propertyDescription.DbType.IsNullable() ? $"dbObject.{propertyDescription.DbName} == null ? null : " : "";
+		constructorParams += $"{nullCondition}typeof({enumTypeFriendlyName}).GetEnumValues().Cast<{enumTypeFriendlyName}>().Where(item => (dbObject.{propertyDescription.DbName} & ({nonNullableDbTypeFriendlyName})item) == ({nonNullableDbTypeFriendlyName})item).ToList()";
+	}
+	else 
+	{
+		var typeCast = !propertyDescription.EntityType.Equals(propertyDescription.DbType) ? "(" + propertyDescription.EntityType.GetFriendlyCSharpName(usedNamespaces) + ")" : "";
+		constructorParams += typeCast + "dbObject." + propertyDescription.DbName;
+	}
+}
+#>
+<#= $"return new {EntityDescription.Name}Entity({constructorParams});".SplitToLines(2, MaxLineWidth, new string[] { ", " }) #>
+	}
+}
+
+<#+
+	internal EntityDescription EntityDescription;
+	internal int MaxLineWidth;
+	internal List<PropertyDescription> BaseProperty;
+	internal RepositoryTemplate(EntityDescription entityDescription, int maxLineWidth, List<PropertyDescription> baseProperty) {
+		EntityDescription = entityDescription;
+		MaxLineWidth = maxLineWidth;
+		BaseProperty = baseProperty;
+	}
+#>
