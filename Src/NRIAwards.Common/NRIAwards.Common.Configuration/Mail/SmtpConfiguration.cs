@@ -2,9 +2,9 @@
 
 public class SmtpConfiguration
 {
-    public string Host { get; set; }
-    public int Port { get; set; }
-    public bool UseSsl { get; set; }
-    public string UserName { get; set; }
-    public string UserPassword { get; set; }
+    public required string Host { get; init; }
+    public required int Port { get; init; }
+    public required bool UseSsl { get; init; }
+    public required string UserName { get; init; }
+    public required string UserPassword { get; init; }
 }

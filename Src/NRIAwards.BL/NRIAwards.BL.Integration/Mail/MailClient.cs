@@ -2,16 +2,24 @@
 using MimeKit;
 using MimeKit.Text;
 using NRIAwards.Common.Configuration;
+using NRIAwards.Common.Configuration.Mail;
 
 namespace NRIAwards.BL.Integration.Mail;
 
 public class MailClient : IMailClient
 {
+    private readonly SmtpConfiguration smtpConfiguration;
+
+    public MailClient(SharedConfiguration sharedConfiguration)
+    {
+        smtpConfiguration = sharedConfiguration.SmtpConfiguration;
+    }
+
     public async Task SendAsync(SmtpClient client, string senderName,
         IEnumerable<string> recipients, string subject, string body, bool sendBlindCopies = true)
     {
-        await client.ConnectAsync(SharedConfiguration.SmtpConfiguration.Host, SharedConfiguration.SmtpConfiguration.Port, SharedConfiguration.SmtpConfiguration.UseSsl);
-        await client.AuthenticateAsync(SharedConfiguration.SmtpConfiguration.UserName, SharedConfiguration.SmtpConfiguration.UserPassword);
+        await client.ConnectAsync(smtpConfiguration.Host, smtpConfiguration.Port, smtpConfiguration.UseSsl);
+        await client.AuthenticateAsync(smtpConfiguration.UserName, smtpConfiguration.UserPassword);
         var message = new MimeMessage
         {
             Subject = subject,
@@ -20,7 +28,7 @@ public class MailClient : IMailClient
                 Text = body
             }
         };
-        message.From.Add(new MailboxAddress(senderName, SharedConfiguration.SmtpConfiguration.UserName));
+        message.From.Add(new MailboxAddress(senderName, smtpConfiguration.UserName));
         recipients = recipients.ToList();
         if (sendBlindCopies && recipients.Count() > 1)
         {

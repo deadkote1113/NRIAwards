@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace NRIAwards.PL.Ui.Areas.Public.Controllers
+namespace NRIAwards.PL.Ui.Areas.Public.Controllers;
+
+[Area("Public")]
+public class ErrorController : Controller
 {
-    [Area("Public")]
-    public class ErrorController : Controller
+    public IActionResult Index(int code)
     {
-        public IActionResult Index(int code)
-        {
-            return View(code);
-        }
+        return View(code);
     }
 }

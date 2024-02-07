@@ -14,8 +14,8 @@ public class UsersSearchParams : BaseSearchParams
     }
 
     public List<int> Ids { get; set; }
-    public string Login { get; set; }
-    public IEnumerable<UserRole> Roles { get; set; }
-    public string SearchQuery { get; set; }
+    public string? Login { get; set; }
+    public IEnumerable<UserRole>? Roles { get; set; }
+    public string? SearchQuery { get; set; }
 
 }

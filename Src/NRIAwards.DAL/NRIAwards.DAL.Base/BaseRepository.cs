@@ -125,7 +125,7 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         await _context.SaveChangesAsync();
     }
 
-    public virtual async Task<SearchResult<TEntity>> GetAsync(TSearchParams searchParams, TOrderParams orderParams, TIncludeParams convertParams)
+    public virtual async Task<SearchResult<TEntity>> GetAsync(TSearchParams searchParams, TOrderParams orderParams, TIncludeParams? convertParams)
     {
         var objects = _context.Set<TDbObject>().AsNoTracking();
         objects = await BuildDbQueryAsync(objects, searchParams);
@@ -155,11 +155,12 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         return await BuildEntitiesListAsync(_context.Set<TDbObject>().Where(predicate), convertParams);
     }
 
-    protected virtual async Task UpdateBeforeSavingAsync(TEntity entity, TDbObject dbObject, bool exists)
+    protected virtual Task UpdateBeforeSavingAsync(TEntity entity, TDbObject dbObject, bool exists)
     {
         dbObject.CreatedAt = entity.CreatedAt;
         dbObject.UpdatedAt = entity.UpdatedAt;
         dbObject.DeletedAt = entity.DeletedAt;
+        return Task.CompletedTask;
     }
 
     protected virtual Task UpdateAfterSavingAsync(TEntity entity, TDbObject dbObject, bool exists)
@@ -182,5 +183,5 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         return dbObjects;
     }
 
-    protected abstract Task<IList<TEntity>> BuildEntitiesListAsync(IQueryable<TDbObject> dbObjects, TIncludeParams includeParams);
+    protected abstract Task<IList<TEntity>> BuildEntitiesListAsync(IQueryable<TDbObject> dbObjects, TIncludeParams? includeParams);
 }

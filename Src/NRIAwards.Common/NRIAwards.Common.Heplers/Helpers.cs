@@ -1,14 +1,13 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
-using Troschuetz.Random.Generators;
 
 namespace NRIAwards.Common.Heplers;
 
 public static class Helpers
 {
-    private static readonly AbstractGenerator RandomGenerator = new StandardGenerator();
+    private static readonly Random Random = new Random();
 
-    public static string CleanPhone(string phone)
+    public static string? CleanPhone(string? phone)
     {
         if (phone == null)
             return null;
@@ -26,18 +25,18 @@ public static class Helpers
     {
         var builder = new StringBuilder();
         for (var i = 0; i < length; ++i)
-            builder.Append(alphabet[RandomGenerator.Next(0, alphabet.Length - 1)]);
+            builder.Append(alphabet[Random.Next(0, alphabet.Length - 1)]);
         return builder.ToString();
     }
 
     public static string GenerateRandomString(int minLength, int maxLength, string alphabet = "abcdefghijklmnopqrstuvwxyz0123456789")
     {
-        return GenerateRandomString(RandomGenerator.Next(minLength, maxLength), alphabet);
+        return GenerateRandomString(Random.Next(minLength, maxLength), alphabet);
     }
 
     public static int GenerateRandomInt(int minValue, int maxValue)
     {
-        return RandomGenerator.Next(minValue, maxValue + 1);
+        return Random.Next(minValue, maxValue + 1);
     }
 
     public static string GetPasswordHash(string s)

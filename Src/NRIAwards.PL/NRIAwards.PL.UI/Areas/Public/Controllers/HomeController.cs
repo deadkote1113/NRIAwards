@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace NRIAwards.PL.Ui.Areas.Public.Controllers
+namespace NRIAwards.PL.Ui.Areas.Public.Controllers;
+
+[Area("Public")]
+public class HomeController : Controller
 {
-    [Area("Public")]
-    public class HomeController : Controller
+    public IActionResult Index()
     {
-        public IActionResult Index()
-        {
-            return View();
-        }
+        return View();
     }
 }

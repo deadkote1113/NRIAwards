@@ -9,7 +9,6 @@ using NRIAwards.Common.Configuration;
 using NRIAwards.Common.Configuration.Mail;
 using NRIAwards.DAL.Context;
 using NRIAwards.DependencyInjection;
-using System.Configuration;
 
 namespace CodeGeneration.ServerCodeGenerator;
 
@@ -17,11 +16,11 @@ internal class Program
 {
 	internal static void Main(string[] args)
 	{
-		var host = CreateHostBuilder(args).Build();
+		var builder = CreateHostBuilder(args);
+        var host = builder.Build();
 		var configuration = host.Services.GetService<IConfiguration>();
 
-		SharedConfiguration.UpdateSharedConfiguration(configuration.GetConnectionString("DefaultConnectionString"),
-				configuration.GetSection("SmtpSettings").Get<SmtpConfiguration>());
+
 		
 		host.Run();
 	}
@@ -29,10 +28,19 @@ internal class Program
 		Host.CreateDefaultBuilder(args)
 			.ConfigureServices((hostContext, services) =>
 				{
-					services.AddScoped<CodeGenerator>();
+                    var connectionString = hostContext.Configuration.GetConnectionString("DefaultConnectionString");
+                    var SmtpSettings = hostContext.Configuration.GetSection("SmtpSettings").Get<SmtpConfiguration>();
+
+                    SharedConfiguration sharedConfiguration = new()
+                    {
+                        DbConnectionString = connectionString,
+                        SmtpConfiguration = SmtpSettings,
+                    };
+                    services.AddSingleton(sharedConfiguration);
+
+                    services.AddScoped<CodeGenerator>();
 					services.AddScoped<IMergeUtility, KDiff3MergeUtility>();
 					
-					var connectionString = hostContext.Configuration.GetConnectionString("DefaultConnectionString");
 					services.AddDbContext<PostgresDbContext>((DbContextOptionsBuilder options) => options.UseNpgsql(connectionString));
 
 					services.AddHostedService<CodeGenerationService>();

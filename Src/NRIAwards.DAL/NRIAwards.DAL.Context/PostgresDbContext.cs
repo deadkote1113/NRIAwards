@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using NRIAwards.Common.Entity.Enum;
 using NRIAwards.DAL.Context.Model;
 
 namespace NRIAwards.DAL.Context;
@@ -7,7 +6,6 @@ namespace NRIAwards.DAL.Context;
 public class PostgresDbContext : DbContext
 {
     public DbSet<User> Users { get; set; }
-    public DbSet<Characteristic> Characteristics { get; set; }
 
     public PostgresDbContext(DbContextOptions<PostgresDbContext> options) : base(options)
     {
@@ -21,7 +19,8 @@ public class PostgresDbContext : DbContext
         {
             Id = 1,
             Login = "admin",
-            Password = "6fe7785e8523e09070fa676fa94c272b09c11699149a2a7589e67bf8ce81fd97ffb944005390f83e5eb1299383fc2b6c42bfc902e0daf106d64c3b574f68112f", //1qw23er45ty6
+            //1qw23er45ty6
+            Password = "6fe7785e8523e09070fa676fa94c272b09c11699149a2a7589e67bf8ce81fd97ffb944005390f83e5eb1299383fc2b6c42bfc902e0daf106d64c3b574f68112f",
             RoleId = UserRole.Admin,
             CreatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
             UpdatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
