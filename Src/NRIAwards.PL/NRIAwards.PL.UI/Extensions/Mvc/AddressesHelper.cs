@@ -1,22 +1,20 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-namespace NRIAwards.PL.Ui.Extensions.Mvc;
+﻿namespace NRIAwards.PL.Ui.Extensions.Mvc;
 
 public static class AddressesExtensions
 {
-    public static string GetArea(this IUrlHelper url)
+    public static string? GetArea(this IUrlHelper url)
     {
-        return url.ActionContext.RouteData.Values["area"].ToString();
+        return url.ActionContext?.RouteData?.Values["area"]?.ToString();
     }
 
-    public static string GetController(this IUrlHelper url)
+    public static string? GetController(this IUrlHelper url)
     {
-        return url.ActionContext.RouteData.Values["controller"].ToString();
+        return url.ActionContext?.RouteData?.Values["controller"]?.ToString();
     }
 
-    public static string GetAction(this IUrlHelper url)
+    public static string? GetAction(this IUrlHelper url)
     {
-        return url.ActionContext.RouteData.Values["action"].ToString();
+        return url.ActionContext?.RouteData?.Values["action"]?.ToString();
     }
 
     public static string GetImageUrl(this IUrlHelper url, string imageUrl, string placeholderUrl = "/images/adminImagePlaceholder.svg")

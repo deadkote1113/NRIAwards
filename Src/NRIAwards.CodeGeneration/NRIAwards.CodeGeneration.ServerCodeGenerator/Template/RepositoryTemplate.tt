@@ -59,7 +59,7 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
 }
 #>
 
-	protected override async Task<IQueryable<<#= EntityDescription.Name #>>> BuildDbQueryAsync(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>SearchParams searchParams)
+	protected override IQueryable<<#= EntityDescription.Name #>> BuildDbQuery(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>SearchParams searchParams)
 	{
 		dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
 
@@ -74,7 +74,7 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
 		return dbObjects;
 	}
 
-	protected override async Task<IQueryable<<#= EntityDescription.Name #>>> OrderDbQueryAsync(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>OrderParams orderParams)
+	protected override IQueryable<<#= EntityDescription.Name #>> OrderDbQuery(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>OrderParams orderParams)
 	{
 		dbObjects = await base.OrderDbQueryAsync(dbObjects, orderParams);
 
@@ -93,11 +93,6 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
 
 	internal static <#= EntityDescription.Name #>Entity ConvertDbObjectToEntity(<#= EntityDescription.Name #> dbObject)
 	{
-		if (dbObject == null)
-		{
-			return null;
-		}
-
 <#
 var constructorParams = "";
 List<PropertyDescription> allPropertyies = new();

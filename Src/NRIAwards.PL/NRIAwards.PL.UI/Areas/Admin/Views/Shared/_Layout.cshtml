@@ -17,7 +17,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<ul class="navbar-nav ml-auto">
-			@if (User.Identity.IsAuthenticated)
+			@if (User?.Identity?.IsAuthenticated ?? false)
 			{
 				<li class="nav-item text-nowrap text-light mr-5 my-auto d-none d-md-block">
 					Вы вошли как:<br /><span class="font-weight-bold">@User.Identity.Name</span>
@@ -45,7 +45,7 @@
 								Главная
 							</a>
 						</li>
-						@if (User.Identity.IsAuthenticated)
+						@if (User?.Identity?.IsAuthenticated ?? false)
 						{
 							<li class="nav-item">
 								<a class="nav-link @(Url.GetController() == "Users" ? "active" : "")" asp-controller="Users" asp-action="Index">

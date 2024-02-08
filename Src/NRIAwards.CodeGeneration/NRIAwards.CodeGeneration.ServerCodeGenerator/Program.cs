@@ -18,10 +18,7 @@ internal class Program
 	{
 		var builder = CreateHostBuilder(args);
         var host = builder.Build();
-		var configuration = host.Services.GetService<IConfiguration>();
 
-
-		
 		host.Run();
 	}
 	private static IHostBuilder CreateHostBuilder(string[] args) =>
@@ -50,5 +47,3 @@ internal class Program
 				}
 			).UseNLog();
 }
-
-

@@ -1,8 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using NRIAwards.Common.Entity;
-using NRIAwards.Common.Entity.Order;
-using NRIAwards.Common.Entity.Search;
 using NRIAwards.Common.Heplers;
 using System.Linq.Expressions;
 
@@ -31,12 +28,12 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         var objects = _context.Set<TDbObject>();
         var dbObject = await objects.FirstOrDefaultAsync(item => item.Id.Equals(entity.Id));
         var exists = dbObject != null;
-        if (!exists)
+        if (exists == false)
         {
             dbObject = new TDbObject();
         }
         await UpdateBeforeSavingAsync(entity, dbObject, exists);
-        if (!exists)
+        if (exists == false)
         {
             objects.Add(dbObject);
         }
@@ -63,10 +60,12 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
             var exists = dbObjectsDictionary.ContainsKey(id);
             var dbObject = exists ? dbObjectsDictionary[id] : new TDbObject();
             if (exists)
+            {
                 existingSet.Add(id);
+            }
             await UpdateBeforeSavingAsync(entity, dbObject, exists);
             dbObjects.Add(dbObject);
-            if (!exists)
+            if (exists == false)
             {
                 addedObjects.Add(dbObject);
             }
@@ -86,10 +85,10 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         return dbObjects.Select(item => item.Id).ToList();
     }
 
-    public virtual async Task<TEntity> GetAsync(TId id, TIncludeParams convertParams)
+    public virtual async Task<TEntity?> GetAsync(TId id, TIncludeParams? includeParams)
     {
         var dbObjects = _context.Set<TDbObject>().Where(item => item.Id.Equals(id)).Take(1);
-        return (await BuildEntitiesListAsync(dbObjects, convertParams)).FirstOrDefault();
+        return (await BuildEntitiesListAsync(dbObjects, includeParams)).FirstOrDefault();
     }
 
     public virtual Task<bool> ExistsAsync(TId id)
@@ -100,7 +99,7 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
     public virtual async Task<bool> ExistsAsync(TSearchParams searchParams)
     {
         var objects = _context.Set<TDbObject>().AsNoTracking();
-        return await (await BuildDbQueryAsync(objects, searchParams)).AnyAsync();
+        return await BuildDbQuery(objects, searchParams).AnyAsync();
     }
 
     public virtual async Task<bool> DeleteAsync(TId id)
@@ -128,8 +127,8 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
     public virtual async Task<SearchResult<TEntity>> GetAsync(TSearchParams searchParams, TOrderParams orderParams, TIncludeParams? convertParams)
     {
         var objects = _context.Set<TDbObject>().AsNoTracking();
-        objects = await BuildDbQueryAsync(objects, searchParams);
-        objects = await OrderDbQueryAsync(objects, orderParams);
+        objects = BuildDbQuery(objects, searchParams);
+        objects = OrderDbQuery(objects, orderParams);
         var result = new SearchResult<TEntity>
         {
             Total = await objects.CountAsync(),
@@ -150,7 +149,7 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         return result;
     }
 
-    internal virtual async Task<IList<TEntity>> GetAsync(Expression<Func<TDbObject, bool>> predicate, TIncludeParams convertParams = null)
+    internal virtual async Task<IList<TEntity>> GetAsync(Expression<Func<TDbObject, bool>> predicate, TIncludeParams? convertParams = null)
     {
         return await BuildEntitiesListAsync(_context.Set<TDbObject>().Where(predicate), convertParams);
     }
@@ -168,13 +167,13 @@ public abstract class BaseRepository<TDbContext, TDbObject, TEntity, TId, TSearc
         return Task.CompletedTask;
     }
 
-    protected virtual async Task<IQueryable<TDbObject>> BuildDbQueryAsync(IQueryable<TDbObject> dbObjects, TSearchParams searchParams)
+    protected virtual IQueryable<TDbObject> BuildDbQuery(IQueryable<TDbObject> dbObjects, TSearchParams searchParams)
     {
         dbObjects = dbObjects.Where(item => searchParams.ExcludeDeleted == true && item.DeletedAt == null || searchParams.ExcludeDeleted == false);
         return dbObjects;
     }
 
-    protected virtual async Task<IQueryable<TDbObject>> OrderDbQueryAsync(IQueryable<TDbObject> dbObjects, TOrderParams orderParams)
+    protected virtual IQueryable<TDbObject> OrderDbQuery(IQueryable<TDbObject> dbObjects, TOrderParams orderParams)
     {
         if (orderParams.OrderByIdAsc.HasValue)
         {

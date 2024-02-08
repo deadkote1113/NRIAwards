@@ -4,6 +4,7 @@ using System.Text.Encodings.Web;
 
 namespace NRIAwards.PL.Ui.Extensions.Mvc;
 
+[Obsolete]
 public static class PagedListExtensions
 {
     public static IHtmlContent PagedList(this IHtmlHelper helper, int itemsCount, int itemsPerPage, int currentPage,

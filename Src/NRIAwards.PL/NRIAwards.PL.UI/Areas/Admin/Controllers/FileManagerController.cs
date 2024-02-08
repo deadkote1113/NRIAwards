@@ -202,7 +202,7 @@ public class FileManagerController : Controller
                 StatusCode = StatusCodes.Status400BadRequest
             };
         }
-        var directoryInfo = new DirectoryInfo(GetAbsolutePathFromUrl(directory));
+        DirectoryInfo directoryInfo = new(GetAbsolutePathFromUrl(directory));
         if (!directoryInfo.Exists)
         {
             return new ContentResult

@@ -230,14 +230,14 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
             
             #line default
             #line hidden
-            this.Write("\r\n\tprotected override async Task<IQueryable<");
+            this.Write("\r\n\tprotected override IQueryable<");
             
             #line 62 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityDescription.Name));
             
             #line default
             #line hidden
-            this.Write(">> BuildDbQueryAsync(IQueryable<");
+            this.Write("> BuildDbQuery(IQueryable<");
             
             #line 62 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityDescription.Name));
@@ -269,14 +269,14 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
             
             #line default
             #line hidden
-            this.Write("        }\r\n\t\treturn dbObjects;\r\n\t}\r\n\r\n\tprotected override async Task<IQueryable<");
+            this.Write("        }\r\n\t\treturn dbObjects;\r\n\t}\r\n\r\n\tprotected override IQueryable<");
             
             #line 77 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityDescription.Name));
             
             #line default
             #line hidden
-            this.Write(">> OrderDbQueryAsync(IQueryable<");
+            this.Write("> OrderDbQuery(IQueryable<");
             
             #line 77 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(EntityDescription.Name));
@@ -328,9 +328,9 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
             
             #line default
             #line hidden
-            this.Write(" dbObject)\r\n\t{\r\n\t\tif (dbObject == null)\r\n\t\t{\r\n\t\t\treturn null;\r\n\t\t}\r\n\r\n");
+            this.Write(" dbObject)\r\n\t{\r\n");
             
-            #line 101 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
+            #line 96 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
 
 var constructorParams = "";
 List<PropertyDescription> allPropertyies = new();
@@ -360,7 +360,7 @@ foreach (var propertyDescription in allPropertyies)
             #line default
             #line hidden
             
-            #line 126 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
+            #line 121 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture($"return new {EntityDescription.Name}Entity({constructorParams});".SplitToLines(2, MaxLineWidth, new string[] { ", " })));
             
             #line default
@@ -369,7 +369,7 @@ foreach (var propertyDescription in allPropertyies)
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 130 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
+        #line 125 "C:\Projects\Home\NRIAwards\Src\NRIAwards.CodeGeneration\NRIAwards.CodeGeneration.ServerCodeGenerator\Template\RepositoryTemplate.tt"
 
 	internal EntityDescription EntityDescription;
 	internal int MaxLineWidth;

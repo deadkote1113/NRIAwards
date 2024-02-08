@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
-using NRIAwards.Common.Entity.Enum;
 
 namespace NRIAwards.PL.Ui.Extensions.Mvc;
 
@@ -14,7 +13,7 @@ public static class SelectListExtensions
         });
     }
 
-    public static IEnumerable<SelectListItem> GetNullableEnumSelectList<TEnum>(this IHtmlHelper helper, string nullTitle, IEnumerable<TEnum> items = null) where TEnum : Enum
+    public static IEnumerable<SelectListItem> GetNullableEnumSelectList<TEnum>(this IHtmlHelper helper, string nullTitle, IEnumerable<TEnum>? items = null) where TEnum : Enum
     {
         var result = new List<SelectListItem>
         {

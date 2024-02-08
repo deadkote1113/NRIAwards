@@ -9,7 +9,7 @@ public interface IBaseRepository<TEntity, TId, TSearchParams, TOrderParams, TInc
 {
     Task<TId> AddOrUpdateAsync(TEntity entity);
     Task<IList<TId>> AddOrUpdateAsync(IList<TEntity> entities);
-    Task<TEntity> GetAsync(TId id, TIncludeParams? convertParams);
+    Task<TEntity?> GetAsync(TId id, TIncludeParams? convertParams);
     Task<SearchResult<TEntity>> GetAsync(TSearchParams searchParams, TOrderParams orderParams, TIncludeParams? convertParams);
     Task<bool> ExistsAsync(TId id);
     Task<bool> ExistsAsync(TSearchParams searchParams);

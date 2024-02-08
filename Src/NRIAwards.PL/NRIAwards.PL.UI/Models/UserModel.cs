@@ -1,6 +1,4 @@
-﻿using NRIAwards.Common.Entity;
-using NRIAwards.Common.Entity.Enum;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NRIAwards.PL.Ui.Models;
 
@@ -15,7 +13,7 @@ public class UserModel : BaseModel<int>
     public string Login { get; set; }
 
     [Display(Name = "Пароль")]
-    public string Password { get; set; }
+    public string? Password { get; set; }
 
     [Display(Name = "Дата регистрации")]
     public DateTime RegistrationDate { get; set; }
@@ -24,7 +22,7 @@ public class UserModel : BaseModel<int>
     [Display(Name = "Роль")]
     public UserRole Role { get; set; }
 
-    public static UserModel FromEntity(User entity)
+    public static UserModel? FromEntity(User? entity)
     {
         if (entity == null)
         {
@@ -43,7 +41,7 @@ public class UserModel : BaseModel<int>
         };
     }
 
-    public static User ToEntity(UserModel model)
+    public static User? ToEntity(UserModel? model)
     {
         if (model == null)
         {
@@ -52,13 +50,13 @@ public class UserModel : BaseModel<int>
         return new User(model.Id, model.CreatedAt, model.UpdatedAt, model.DeletedAt, model.Login, model.Password, model.Role, model.IsBlocked);
     }
 
-    public static List<UserModel> FromEntitiesList(IEnumerable<User> list)
+    public static List<UserModel?> FromEntitiesList(IEnumerable<User?> list)
     {
-        return list?.Select(FromEntity).ToList();
+        return list.Select(FromEntity).ToList();
     }
 
-    public static List<User> ToEntitiesList(IEnumerable<UserModel> list)
+    public static List<User?> ToEntitiesList(IEnumerable<UserModel?> list)
     {
-        return list?.Select(ToEntity).ToList();
+        return list.Select(ToEntity).ToList();
     }
 }

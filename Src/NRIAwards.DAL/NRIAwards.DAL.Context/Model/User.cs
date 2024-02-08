@@ -1,6 +1,4 @@
-﻿using NRIAwards.Common.Entity.Enum;
-
-namespace NRIAwards.DAL.Context.Model;
+﻿namespace NRIAwards.DAL.Context.Model;
 
 public class User : PostgresModel
 {

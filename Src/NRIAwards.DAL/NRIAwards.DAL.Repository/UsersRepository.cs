@@ -17,14 +17,16 @@ public class UsersRepository : BaseRepository<PostgresDbContext, User, UserEntit
 
         dbObject.IsBlocked = entity.IsBlocked;
         dbObject.Login = entity.Login;
-        if (!exists || entity.Password != null)
+        if (exists == false || entity.Password != null)
+        {
             dbObject.Password = entity.Password;
+        }
         dbObject.RoleId = entity.RoleId;
     }
 
-    protected override async Task<IQueryable<User>> BuildDbQueryAsync(IQueryable<User> dbObjects, UsersSearchParams searchParams)
+    protected override IQueryable<User> BuildDbQuery(IQueryable<User> dbObjects, UsersSearchParams searchParams)
     {
-        dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
+        dbObjects = base.BuildDbQuery(dbObjects, searchParams);
 
         if (searchParams != null)
         {
@@ -32,18 +34,15 @@ public class UsersRepository : BaseRepository<PostgresDbContext, User, UserEntit
             {
                 dbObjects = dbObjects.Where(item => item.Login == searchParams.Login);
             }
-
             if (searchParams.Ids is not null)
             {
                 dbObjects = dbObjects.Where(item => searchParams.Ids.Contains(item.Id));
             }
-
             if (searchParams.Roles is not null)
             {
                 dbObjects = dbObjects.Where(item => searchParams.Roles.Contains(item.RoleId));
             }
-
-            if (string.IsNullOrEmpty(searchParams.SearchQuery))
+            if (searchParams.SearchQuery is not null && string.IsNullOrEmpty(searchParams.SearchQuery) == false)
             {
                 dbObjects = dbObjects.Where(item => item.Login.Trim().ToLower() == searchParams.SearchQuery.Trim().ToLower());
             }
@@ -52,9 +51,9 @@ public class UsersRepository : BaseRepository<PostgresDbContext, User, UserEntit
         return dbObjects;
     }
 
-    protected override async Task<IQueryable<User>> OrderDbQueryAsync(IQueryable<User> dbObjects, UsersOrderParams orderParams)
+    protected override IQueryable<User> OrderDbQuery(IQueryable<User> dbObjects, UsersOrderParams orderParams)
     {
-        dbObjects = await base.OrderDbQueryAsync(dbObjects, orderParams);
+        dbObjects = base.OrderDbQuery(dbObjects, orderParams);
 
         if (orderParams != null)
         {
@@ -64,18 +63,13 @@ public class UsersRepository : BaseRepository<PostgresDbContext, User, UserEntit
         return dbObjects;
     }
 
-    protected override async Task<IList<UserEntity>> BuildEntitiesListAsync(IQueryable<User> dbObjects, UsersIncludeParams includeParams)
+    protected override async Task<IList<UserEntity>> BuildEntitiesListAsync(IQueryable<User> dbObjects, UsersIncludeParams? includeParams)
     {
         return (await dbObjects.ToListAsync()).Select(ConvertDbObjectToEntity).ToList();
     }
 
     internal static UserEntity ConvertDbObjectToEntity(User dbObject)
     {
-        if (dbObject == null)
-        {
-            return null;
-        }
-
         return new UserEntity(dbObject.Id, dbObject.CreatedAt, dbObject.UpdatedAt, dbObject.DeletedAt,
             dbObject.Login, dbObject.Password, dbObject.RoleId, dbObject.IsBlocked);
     }
