@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace NRIAwards.PL.Ui.Areas.Public.Controllers;
+namespace NRIAwards.PL.UI.Areas.Public.Controllers;
 
 [Area("Public")]
 public class ErrorController : Controller

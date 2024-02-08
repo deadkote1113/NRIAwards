@@ -1,13 +1,13 @@
 ﻿using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using NRIAwards.PL.Ui.Models;
-using NRIAwards.PL.Ui.Models.ViewModels;
-using NRIAwards.PL.Ui.Models.ViewModels.FilterModels;
-using NRIAwards.PL.Ui.Other;
+using NRIAwards.PL.UI.Models;
+using NRIAwards.PL.UI.Models.ViewModels;
+using NRIAwards.PL.UI.Models.ViewModels.FilterModels;
+using NRIAwards.PL.UI.Other;
 using System.Security.Claims;
 
-namespace NRIAwards.PL.Ui.Areas.Admin.Controllers;
+namespace NRIAwards.PL.UI.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class UsersController : Controller

@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NRIAwards.PL.Ui.Models;
+namespace NRIAwards.PL.UI.Models;
 
 public class LogOnModel
 {

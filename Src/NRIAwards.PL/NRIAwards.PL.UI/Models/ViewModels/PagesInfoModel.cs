@@ -1,4 +1,4 @@
-﻿namespace NRIAwards.PL.Ui.Models.ViewModels;
+﻿namespace NRIAwards.PL.UI.Models.ViewModels;
 
 public class PagesInfoModel
 {

@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Options;
-using NRIAwards.PL.Ui.Models.FileManager;
+using NRIAwards.PL.UI.Models.FileManager;
 
-namespace NRIAwards.PL.Ui.Areas.Admin.Controllers;
+namespace NRIAwards.PL.UI.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize]

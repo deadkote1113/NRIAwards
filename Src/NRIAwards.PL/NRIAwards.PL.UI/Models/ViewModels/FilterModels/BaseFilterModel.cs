@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 
-namespace NRIAwards.PL.Ui.Models.ViewModels.FilterModels;
+namespace NRIAwards.PL.UI.Models.ViewModels.FilterModels;
 
 public class BaseFilterModel
 {

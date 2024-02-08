@@ -1,7 +1,7 @@
 ﻿using NRIAwards.Common.Entity.Enum;
 using System.Security.Claims;
 
-namespace NRIAwards.PL.Ui.Models;
+namespace NRIAwards.PL.UI.Models;
 
 public class CustomUserIdentity : ClaimsIdentity
 {

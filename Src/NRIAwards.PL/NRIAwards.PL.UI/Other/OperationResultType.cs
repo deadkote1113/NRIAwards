@@ -1,4 +1,4 @@
-﻿namespace NRIAwards.PL.Ui.Other;
+﻿namespace NRIAwards.PL.UI.Other;
 
 public enum OperationResultType
 {

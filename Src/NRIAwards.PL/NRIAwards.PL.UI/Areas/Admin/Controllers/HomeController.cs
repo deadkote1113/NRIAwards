@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 
-namespace NRIAwards.PL.Ui.Areas.Admin.Controllers;
+namespace NRIAwards.PL.UI.Areas.Admin.Controllers;
 
 [Area("Admin")]
 [Authorize(Roles = nameof(UserRole.Admin))]

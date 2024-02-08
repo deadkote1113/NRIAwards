@@ -1,4 +1,4 @@
-﻿namespace NRIAwards.PL.Ui.Models.FileManager;
+﻿namespace NRIAwards.PL.UI.Models.FileManager;
 
 public class FileManagerOptions
 {

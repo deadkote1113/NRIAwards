@@ -1,4 +1,4 @@
-﻿namespace NRIAwards.PL.Ui.Areas.Admin.Controllers;
+﻿namespace NRIAwards.PL.UI.Areas.Admin.Controllers;
 
 [Area("Admin")]
 public class ErrorController : Controller

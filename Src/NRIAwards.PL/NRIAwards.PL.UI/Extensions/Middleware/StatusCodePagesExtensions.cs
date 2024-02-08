@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http.Features;
 
-namespace NRIAwards.PL.Ui.Extensions.Middleware;
+namespace NRIAwards.PL.UI.Extensions.Middleware;
 
 public static class StatusCodePagesExtensions
 {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace NRIAwards.PL.Ui.Models.ViewModels;
+namespace NRIAwards.PL.UI.Models.ViewModels;
 
 public class SearchResultViewModel<TModel>
 {

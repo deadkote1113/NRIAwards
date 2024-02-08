@@ -1,4 +1,4 @@
-﻿namespace NRIAwards.PL.Ui.Extensions.Mvc;
+﻿namespace NRIAwards.PL.UI.Extensions.Mvc;
 
 public static class AddressesExtensions
 {

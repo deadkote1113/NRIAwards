@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Text.Encodings.Web;
 
-namespace NRIAwards.PL.Ui.Extensions.Mvc;
+namespace NRIAwards.PL.UI.Extensions.Mvc;
 
 [Obsolete]
 public static class PagedListExtensions

@@ -4,14 +4,14 @@ using NLog;
 using NLog.Web;
 using NRIAwards.DAL.Context;
 using NRIAwards.DependencyInjection;
-using NRIAwards.PL.Ui.Models.FileManager;
-using NRIAwards.PL.Ui.Models;
+using NRIAwards.PL.UI.Models.FileManager;
+using NRIAwards.PL.UI.Models;
 using System.Security.Claims;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 using NRIAwards.Common.Configuration.Mail;
 using NRIAwards.Common.Configuration;
-using NRIAwards.PL.Ui.Extensions.Middleware;
+using NRIAwards.PL.UI.Extensions.Middleware;
 
 var logger = LogManager.Setup().LoadConfigurationFromAppSettings().GetCurrentClassLogger();
 logger.Debug("init main");
