@@ -6,8 +6,8 @@ public class AwardEvent : PostgresModel
 	public string Description { get; set; }
 	public int AwardsId { get; set; }
 	public int OrderId { get; set; }
-	public int? VisualContentId { get; set; }
+	public int VisualContentId { get; set; }
 
 	public virtual Award Award { get; set; }
-	public virtual VisualContent? VisualContent { get; }
+	public virtual VisualContent VisualContent { get; }
 }

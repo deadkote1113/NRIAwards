@@ -30,7 +30,6 @@ internal class Program
 
                     SharedConfiguration sharedConfiguration = new()
                     {
-                        DbConnectionString = connectionString,
                         SmtpConfiguration = SmtpSettings,
                     };
                     services.AddSingleton(sharedConfiguration);

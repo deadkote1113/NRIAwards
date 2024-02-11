@@ -70,7 +70,6 @@ try
 
     SharedConfiguration configuration = new()
     {
-        DbConnectionString = connectionString,
         SmtpConfiguration = SmtpSettings,
     };
     builder.Services.AddSingleton(configuration);

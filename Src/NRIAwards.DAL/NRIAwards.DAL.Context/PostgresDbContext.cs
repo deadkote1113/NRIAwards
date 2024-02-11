@@ -15,8 +15,8 @@ public class PostgresDbContext : DbContext
 	public DbSet<AwardEvent> AwardEvents { get; set; }
 	public DbSet<AwardSession> AwardSessions { get; set; }
 	public DbSet<Nomination> Nominations { get; set; }
-	public DbSet<Nominee> Nominee { get; set; }
-	public DbSet<Reader> Reader { get; set; }
+	public DbSet<Nominee> Nominees { get; set; }
+	public DbSet<Reader> Readers { get; set; }
 	public DbSet<User> Users { get; set; }
 	public DbSet<VisualContent> VisualContents { get; set; }
 	public DbSet<Vote> Votes { get; set; }
@@ -24,18 +24,18 @@ public class PostgresDbContext : DbContext
 	protected override void OnModelCreating(ModelBuilder modelBuilder)
 	{
 		modelBuilder.Entity<User>().HasData(
-		new User()
-		{
-			Id = 1,
-			Login = "admin",
-			//1qw23er45ty6
-			Password = "6fe7785e8523e09070fa676fa94c272b09c11699149a2a7589e67bf8ce81fd97ffb944005390f83e5eb1299383fc2b6c42bfc902e0daf106d64c3b574f68112f",
-			RoleId = UserRole.Admin,
-			VisualContentId = SharedConfiguration.VisualContentPlaceholderId,
-			CreatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
-			UpdatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
-			IsBlocked = false,
-		});
+			new User()
+			{
+				Id = 1,
+				Login = "admin",
+				//1qw23er45ty6
+				Password = "6fe7785e8523e09070fa676fa94c272b09c11699149a2a7589e67bf8ce81fd97ffb944005390f83e5eb1299383fc2b6c42bfc902e0daf106d64c3b574f68112f",
+				RoleId = UserRole.Admin,
+				VisualContentId = SharedConfiguration.VisualContentPlaceholderId,
+				CreatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
+				UpdatedAt = DateTime.SpecifyKind(new DateTime(2000, 1, 1), DateTimeKind.Utc),
+				IsBlocked = false,
+			});
 
 		modelBuilder.Entity<VisualContent>().HasData(
 			new VisualContent()
