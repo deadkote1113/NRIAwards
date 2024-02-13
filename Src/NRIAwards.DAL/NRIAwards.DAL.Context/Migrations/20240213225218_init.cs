@@ -7,19 +7,13 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NRIAwards.DAL.Context.Migrations
 {
     /// <inheritdoc />
-    public partial class awards : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "VisualContentId",
-                table: "Users",
-                type: "integer",
-                nullable: true);
-
             migrationBuilder.CreateTable(
-                name: "Reader",
+                name: "Readers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -31,7 +25,7 @@ namespace NRIAwards.DAL.Context.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Reader", x => x.Id);
+                    table.PrimaryKey("PK_Readers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -60,7 +54,7 @@ namespace NRIAwards.DAL.Context.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
-                    VisualContentId = table.Column<int>(type: "integer", nullable: true),
+                    VisualContentId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
@@ -72,7 +66,34 @@ namespace NRIAwards.DAL.Context.Migrations
                         name: "FK_Awards_VisualContents_VisualContentId",
                         column: x => x.VisualContentId,
                         principalTable: "VisualContents",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Login = table.Column<string>(type: "text", nullable: false),
+                    Password = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<int>(type: "integer", nullable: false),
+                    IsBlocked = table.Column<bool>(type: "boolean", nullable: false),
+                    VisualContentId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Users_VisualContents_VisualContentId",
+                        column: x => x.VisualContentId,
+                        principalTable: "VisualContents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -85,7 +106,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     Description = table.Column<string>(type: "text", nullable: false),
                     AwardsId = table.Column<int>(type: "integer", nullable: false),
                     OrderId = table.Column<int>(type: "integer", nullable: false),
-                    VisualContentId = table.Column<int>(type: "integer", nullable: true),
+                    VisualContentId = table.Column<int>(type: "integer", nullable: false),
                     AwardId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -103,6 +124,45 @@ namespace NRIAwards.DAL.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Nominations",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Title = table.Column<string>(type: "text", nullable: false),
+                    Description = table.Column<string>(type: "text", nullable: false),
+                    OrderId = table.Column<int>(type: "integer", nullable: false),
+                    AwardsId = table.Column<int>(type: "integer", nullable: false),
+                    ReaderId = table.Column<int>(type: "integer", nullable: true),
+                    VisualContentId = table.Column<int>(type: "integer", nullable: false),
+                    AwardId = table.Column<int>(type: "integer", nullable: false),
+                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Nominations", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Nominations_Awards_AwardId",
+                        column: x => x.AwardId,
+                        principalTable: "Awards",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Nominations_Readers_ReaderId",
+                        column: x => x.ReaderId,
+                        principalTable: "Readers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Nominations_VisualContents_VisualContentId",
+                        column: x => x.VisualContentId,
+                        principalTable: "VisualContents",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AwardSessions",
                 columns: table => new
                 {
@@ -111,7 +171,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     UserId = table.Column<int>(type: "integer", nullable: false),
                     ConnectionCode = table.Column<string>(type: "text", nullable: false),
                     State = table.Column<int>(type: "integer", nullable: false),
-                    NominationPassed = table.Column<int>(type: "integer", nullable: false),
+                    PassedStagesCount = table.Column<int>(type: "integer", nullable: false),
                     AwardId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -135,45 +195,7 @@ namespace NRIAwards.DAL.Context.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Nominations",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "integer", nullable: false)
-                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: false),
-                    OrderId = table.Column<int>(type: "integer", nullable: false),
-                    AwardsId = table.Column<int>(type: "integer", nullable: false),
-                    ReaderId = table.Column<int>(type: "integer", nullable: true),
-                    VisualContentId = table.Column<int>(type: "integer", nullable: true),
-                    AwardId = table.Column<int>(type: "integer", nullable: false),
-                    CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Nominations", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Nominations_Awards_AwardId",
-                        column: x => x.AwardId,
-                        principalTable: "Awards",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Nominations_Reader_ReaderId",
-                        column: x => x.ReaderId,
-                        principalTable: "Reader",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_Nominations_VisualContents_VisualContentId",
-                        column: x => x.VisualContentId,
-                        principalTable: "VisualContents",
-                        principalColumn: "Id");
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Nominee",
+                name: "Nominees",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
@@ -181,25 +203,26 @@ namespace NRIAwards.DAL.Context.Migrations
                     Title = table.Column<string>(type: "text", nullable: false),
                     Description = table.Column<string>(type: "text", nullable: false),
                     NominationId = table.Column<int>(type: "integer", nullable: false),
-                    VisualContentId = table.Column<int>(type: "integer", nullable: true),
+                    VisualContentId = table.Column<int>(type: "integer", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     DeletedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Nominee", x => x.Id);
+                    table.PrimaryKey("PK_Nominees", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Nominee_Nominations_NominationId",
+                        name: "FK_Nominees_Nominations_NominationId",
                         column: x => x.NominationId,
                         principalTable: "Nominations",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Nominee_VisualContents_VisualContentId",
+                        name: "FK_Nominees_VisualContents_VisualContentId",
                         column: x => x.VisualContentId,
                         principalTable: "VisualContents",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -209,9 +232,9 @@ namespace NRIAwards.DAL.Context.Migrations
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     NomineeId = table.Column<int>(type: "integer", nullable: false),
-                    IsCanseld = table.Column<bool>(type: "boolean", nullable: false),
+                    IsCanceled = table.Column<bool>(type: "boolean", nullable: false),
                     Tier = table.Column<int>(type: "integer", nullable: false),
-                    TelegramUserName = table.Column<string>(type: "text", nullable: false),
+                    TelegramUsername = table.Column<string>(type: "text", nullable: false),
                     TelegramAvatar = table.Column<string>(type: "text", nullable: true),
                     CreatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
@@ -221,29 +244,22 @@ namespace NRIAwards.DAL.Context.Migrations
                 {
                     table.PrimaryKey("PK_Votes", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Votes_Nominee_NomineeId",
+                        name: "FK_Votes_Nominees_NomineeId",
                         column: x => x.NomineeId,
-                        principalTable: "Nominee",
+                        principalTable: "Nominees",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
-
-            migrationBuilder.UpdateData(
-                table: "Users",
-                keyColumn: "Id",
-                keyValue: 1,
-                column: "VisualContentId",
-                value: 1);
 
             migrationBuilder.InsertData(
                 table: "VisualContents",
                 columns: new[] { "Id", "CreatedAt", "DeletedAt", "Link", "Title", "Type", "UpdatedAt" },
                 values: new object[] { 1, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, "", "Placeholder", 1, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc) });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Users_VisualContentId",
+            migrationBuilder.InsertData(
                 table: "Users",
-                column: "VisualContentId");
+                columns: new[] { "Id", "CreatedAt", "DeletedAt", "IsBlocked", "Login", "Password", "RoleId", "UpdatedAt", "VisualContentId" },
+                values: new object[] { 1, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), null, false, "admin", "6fe7785e8523e09070fa676fa94c272b09c11699149a2a7589e67bf8ce81fd97ffb944005390f83e5eb1299383fc2b6c42bfc902e0daf106d64c3b574f68112f", 1, new DateTime(2000, 1, 1, 0, 0, 0, 0, DateTimeKind.Utc), 1 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AwardEvents_AwardId",
@@ -281,35 +297,29 @@ namespace NRIAwards.DAL.Context.Migrations
                 column: "VisualContentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Nominee_NominationId",
-                table: "Nominee",
+                name: "IX_Nominees_NominationId",
+                table: "Nominees",
                 column: "NominationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Nominee_VisualContentId",
-                table: "Nominee",
+                name: "IX_Nominees_VisualContentId",
+                table: "Nominees",
+                column: "VisualContentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_VisualContentId",
+                table: "Users",
                 column: "VisualContentId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Votes_NomineeId",
                 table: "Votes",
                 column: "NomineeId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Users_VisualContents_VisualContentId",
-                table: "Users",
-                column: "VisualContentId",
-                principalTable: "VisualContents",
-                principalColumn: "Id");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Users_VisualContents_VisualContentId",
-                table: "Users");
-
             migrationBuilder.DropTable(
                 name: "AwardEvents");
 
@@ -320,7 +330,10 @@ namespace NRIAwards.DAL.Context.Migrations
                 name: "Votes");
 
             migrationBuilder.DropTable(
-                name: "Nominee");
+                name: "Users");
+
+            migrationBuilder.DropTable(
+                name: "Nominees");
 
             migrationBuilder.DropTable(
                 name: "Nominations");
@@ -329,18 +342,10 @@ namespace NRIAwards.DAL.Context.Migrations
                 name: "Awards");
 
             migrationBuilder.DropTable(
-                name: "Reader");
+                name: "Readers");
 
             migrationBuilder.DropTable(
                 name: "VisualContents");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Users_VisualContentId",
-                table: "Users");
-
-            migrationBuilder.DropColumn(
-                name: "VisualContentId",
-                table: "Users");
         }
     }
 }

@@ -4,7 +4,7 @@
 <#@ import namespace="CodeGeneration.ServerCodeGenerator.Model.Enum" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="System.Linq" #>
-using <#= EntityDescription.Name #>Entity = Common.Entity.<#= EntityDescription.Name #>;
+using <#= EntityDescription.Name #>Entity = NRIAwards.Common.Entity.<#= EntityDescription.Name #>;
 
 namespace NRIAwards.DAL.Repository;
 
@@ -61,11 +61,9 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
 
 	protected override IQueryable<<#= EntityDescription.Name #>> BuildDbQuery(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>SearchParams searchParams)
 	{
-		dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
-
 		if (searchParams != null)
 		{
-			dbObjects = await base.BuildDbQueryAsync(dbObjects, searchParams);
+			dbObjects = base.BuildDbQuery(dbObjects, searchParams);
 			if (searchParams.Ids != null)
 			{
 				dbObjects = dbObjects.Where(item => searchParams.Ids.Contains(item.Id));
@@ -76,7 +74,7 @@ foreach (var propertyDescription in EntityDescription.Properties.Where(item => B
 
 	protected override IQueryable<<#= EntityDescription.Name #>> OrderDbQuery(IQueryable<<#= EntityDescription.Name #>> dbObjects, <#= EntityDescription.PluralName #>OrderParams orderParams)
 	{
-		dbObjects = await base.OrderDbQueryAsync(dbObjects, orderParams);
+		dbObjects = base.OrderDbQuery(dbObjects, orderParams);
 
 		if (orderParams != null)
 		{

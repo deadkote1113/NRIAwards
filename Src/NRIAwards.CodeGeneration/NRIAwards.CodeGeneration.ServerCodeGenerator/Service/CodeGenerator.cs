@@ -17,6 +17,8 @@ namespace CodeGeneration.ServerCodeGenerator.Service;
 
 internal class CodeGenerator
 {
+	private const string DbModelNameSpase = "NRIAwards.DAL.Context.Model";
+
 	private readonly ILogger<CodeGenerator> _logger;
 	private readonly IMergeUtility _mergeUtility;
 	private readonly string _solutionFolderPath;
@@ -93,19 +95,19 @@ internal class CodeGenerator
 
 	internal void Generate()
 	{
-		var commonProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "Common\\Common.Entity\\Common.Entity.csproj"));
+		var commonProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "NRIAwards.Common\\NRIAwards.Common.Entity\\NRIAwards.Common.Entity.csproj"));
 		GenerateCommonEntities(commonProject);
 
-		var baseDalProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "DalLevel\\Dal.Base\\Dal.Base.csproj"));
+		var baseDalProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "NRIAwards.DAL\\NRIAwards.DAL.Base\\NRIAwards.DAL.Base.csproj"));
 		GenerateBaseDalProject(baseDalProject);
 
-		var dalProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "DalLevel\\Dal.Repository\\Dal.Repository.csproj"));
+		var dalProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "NRIAwards.DAL\\NRIAwards.DAL.Repository\\NRIAwards.DAL.Repository.csproj"));
 		GenerateRepositiryProject(dalProject);
 
-		var baseBlProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "BlLevel\\Bl.Base\\Bl.Base.csproj"));
+		var baseBlProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "NRIAwards.BL\\NRIAwards.BL.Base\\NRIAwards.BL.Base.csproj"));
 		GenerateBaseBlProject(baseBlProject);
 
-		var blProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "BlLevel\\Bl.Service\\Bl.Service.csproj"));
+		var blProject = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "NRIAwards.BL\\NRIAwards.BL.Service\\NRIAwards.BL.Service.csproj"));
 		GenerateServiceProject(blProject);
 
 		//var project = new MicrosoftBuildProject(Path.Combine(_solutionFolderPath, "UI\\UI.csproj"));
@@ -346,7 +348,7 @@ internal class CodeGenerator
 			_logger.LogInformation("Не указано имя сущности");
 			return null;
 		}
-		var efType = _dbContext.Model.FindEntityType("Dal.Context.Model." + entityName);
+		var efType = _dbContext.Model.FindEntityType($"{DbModelNameSpase}.{entityName}");
 		if (efType == null)
 		{
 			_logger.LogInformation($"Не удалось загрузить метаданные о типе {entityName} из модели EF");

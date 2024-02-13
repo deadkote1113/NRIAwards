@@ -11,6 +11,7 @@ public class PostgresDbContext : DbContext
 		Database.Migrate();
 	}
 
+	public DbSet<VisualContent> VisualContents { get; set; }
 	public DbSet<Award> Awards { get; set; }
 	public DbSet<AwardEvent> AwardEvents { get; set; }
 	public DbSet<AwardSession> AwardSessions { get; set; }
@@ -18,7 +19,6 @@ public class PostgresDbContext : DbContext
 	public DbSet<Nominee> Nominees { get; set; }
 	public DbSet<Reader> Readers { get; set; }
 	public DbSet<User> Users { get; set; }
-	public DbSet<VisualContent> VisualContents { get; set; }
 	public DbSet<Vote> Votes { get; set; }
 
 	protected override void OnModelCreating(ModelBuilder modelBuilder)

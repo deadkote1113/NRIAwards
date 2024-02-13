@@ -12,8 +12,8 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace NRIAwards.DAL.Context.Migrations
 {
     [DbContext(typeof(PostgresDbContext))]
-    [Migration("20240211150107_awards")]
-    partial class awards
+    [Migration("20240213225218_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,7 +50,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VisualContentId")
+                    b.Property<int>("VisualContentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -94,7 +94,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VisualContentId")
+                    b.Property<int>("VisualContentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -125,7 +125,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int>("NominationPassed")
+                    b.Property<int>("PassedStagesCount")
                         .HasColumnType("integer");
 
                     b.Property<int>("State")
@@ -183,7 +183,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VisualContentId")
+                    b.Property<int>("VisualContentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -225,7 +225,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VisualContentId")
+                    b.Property<int>("VisualContentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -234,7 +234,7 @@ namespace NRIAwards.DAL.Context.Migrations
 
                     b.HasIndex("VisualContentId");
 
-                    b.ToTable("Nominee");
+                    b.ToTable("Nominees");
                 });
 
             modelBuilder.Entity("NRIAwards.DAL.Context.Model.Reader", b =>
@@ -260,7 +260,7 @@ namespace NRIAwards.DAL.Context.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Reader");
+                    b.ToTable("Readers");
                 });
 
             modelBuilder.Entity("NRIAwards.DAL.Context.Model.User", b =>
@@ -294,7 +294,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<int?>("VisualContentId")
+                    b.Property<int>("VisualContentId")
                         .HasColumnType("integer");
 
                     b.HasKey("Id");
@@ -374,7 +374,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<DateTime?>("DeletedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<bool>("IsCanseld")
+                    b.Property<bool>("IsCanceled")
                         .HasColumnType("boolean");
 
                     b.Property<int>("NomineeId")
@@ -383,7 +383,7 @@ namespace NRIAwards.DAL.Context.Migrations
                     b.Property<string>("TelegramAvatar")
                         .HasColumnType("text");
 
-                    b.Property<string>("TelegramUserName")
+                    b.Property<string>("TelegramUsername")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -404,7 +404,9 @@ namespace NRIAwards.DAL.Context.Migrations
                 {
                     b.HasOne("NRIAwards.DAL.Context.Model.VisualContent", null)
                         .WithMany("Awards")
-                        .HasForeignKey("VisualContentId");
+                        .HasForeignKey("VisualContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NRIAwards.DAL.Context.Model.AwardEvent", b =>
@@ -451,7 +453,9 @@ namespace NRIAwards.DAL.Context.Migrations
 
                     b.HasOne("NRIAwards.DAL.Context.Model.VisualContent", null)
                         .WithMany("Nominations")
-                        .HasForeignKey("VisualContentId");
+                        .HasForeignKey("VisualContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Award");
 
@@ -468,7 +472,9 @@ namespace NRIAwards.DAL.Context.Migrations
 
                     b.HasOne("NRIAwards.DAL.Context.Model.VisualContent", null)
                         .WithMany("Nominees")
-                        .HasForeignKey("VisualContentId");
+                        .HasForeignKey("VisualContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Nomination");
                 });
@@ -477,7 +483,9 @@ namespace NRIAwards.DAL.Context.Migrations
                 {
                     b.HasOne("NRIAwards.DAL.Context.Model.VisualContent", null)
                         .WithMany("Users")
-                        .HasForeignKey("VisualContentId");
+                        .HasForeignKey("VisualContentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("NRIAwards.DAL.Context.Model.Vote", b =>
